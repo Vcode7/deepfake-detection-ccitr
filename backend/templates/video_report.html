@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Forensic Report</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 40px;
+      background-color: #f8fafc;
+      color: #2c3e50;
+    }
+    h1 {
+      color: #1e3a8a;
+      border-bottom: 3px solid #1e40af;
+      padding-bottom: 8px;
+    }
+    h2 {
+      color: #1e40af;
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 10px 15px;
+      text-align: left;
+    }
+    th {
+      background-color: #1e3a8a;
+      color: white;
+      font-weight: bold;
+    }
+    tr:nth-child(even) {
+      background-color: #f1f5f9;
+    }
+    .verdict {
+      font-size: 1.3em;
+      margin: 20px 0;
+      padding: 10px 15px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .deepfake {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+      font-weight: bold;
+    }
+    .genuine {
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+      font-weight: bold;
+    }
+    .video-preview {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .video-preview img {
+      max-width: 500px;
+      border: 2px solid #1e3a8a;
+      border-radius: 8px;
+    }
+    .graph-box {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .graph-box img {
+      max-width: 600px;
+      border: 2px solid #1e3a8a;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Video Forensic Analysis Report</h1>
+
+  <h2>Analyzed Video</h2>
+  <div class="video-preview">
+    <a href="{{ base_url }}{{ video_url }}" target="_blank">
+      <img src="{{ thumbnail_path }}" alt="Video Thumbnail">
+    </a>
+    <p>
+      <a href="{{ base_url }}{{ video_url }}" target="_blank">{{ filename }}</a>
+    </p>
+  </div>
+
+  <h2>Detection Result</h2>
+  <div class="verdict {% if is_deepfake %}deepfake{% else %}genuine{% endif %}">
+    {% if is_deepfake %}
+      Deepfake Detected 
+    {% else %}
+      Authentic Content 
+    {% endif %}
+  </div>
+
+  <div style="margin-top: 10px; font-weight: bold; color: #1e3a8a;">
+    {% if confidence|float > 0.7 %}
+    High chance of Deepfake
+    {% elif confidence|float < 0.4 %}
+    Likely Authentic ✅
+    {% else %}
+    Moderate chance of Deepfake ⚠️
+    {% endif %}
+  </div>
+
+  <h2>File Information</h2>
+  <table>
+    <tr><th>File Name</th><td>{{ filename }}</td></tr>
+    <tr><th>Generated On</th><td>{{ timestamp }}</td></tr>
+    <tr><th>File Path</th><td>{{ absolute_path }}</td></tr>
+    <tr><th>Frames Analyzed</th><td>{{ frames_analyzed }}</td></tr>
+    <tr><th>FPS</th><td>{{ fps }}</td></tr>
+    <tr><th>Duration (seconds)</th><td>{{ duration_seconds }}</td></tr>
+    <tr><th>Audio Sync Score</th><td>{{ audio_sync_score }}</td></tr>
+    <tr><th>Temporal Consistency</th><td>{{ temporal_consistency }}</td></tr>
+    <tr><th>Confidence Score</th><td>{{ confidence }}</td></tr>
+  </table>
+
+  <h2>Per-Frame Scores</h2>
+  
+  <div class="graph-box">
+    <img src="{{ perframe_graph }}" alt="Per-frame Score Graph" style="width:100%; height:auto; page-break-before: always;">
+  </div>
+
+</body>
+</html>

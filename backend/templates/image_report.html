@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Forensic Report</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 40px;
+      background-color: #f8fafc;
+      color: #2c3e50;
+    }
+    h1 {
+      color: #1e3a8a;
+      border-bottom: 3px solid #1e40af;
+      padding-bottom: 8px;
+    }
+    h2 {
+      color: #1e40af;
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 10px 15px;
+      text-align: left;
+    }
+    th {
+      background-color: #1e3a8a;
+      color: white;
+      font-weight: bold;
+    }
+    tr:nth-child(even) {
+      background-color: #f1f5f9;
+    }
+    .verdict {
+      font-size: 1.3em;
+      margin: 20px 0;
+      padding: 10px 15px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .deepfake {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+      font-weight: bold;
+    }
+    .genuine {
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+      font-weight: bold;
+    }
+    .image-preview {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .image-preview img {
+      max-width: 500px;
+      border: 2px solid #1e3a8a;
+      border-radius: 8px;
+    }
+    
+    .gradcam-container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .gradcam-box {
+      text-align: center;
+    }
+    .gradcam-box img {
+      max-width: 400px;
+      border: 2px solid #1e3a8a;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Forensic Analysis Report</h1>
+  
+  <h2>Analyzed Image</h2>
+  <div class="image-preview">
+    <img src="{{ image_path }}" alt="Analyzed Image">
+  </div>
+
+  <h2>Detection Result</h2>
+  <div class="verdict {% if is_deepfake %}deepfake{% else %}genuine{% endif %}">
+    {% if is_deepfake %}
+      Deepfake Detected 
+    {% else %}
+      Authentic Content 
+    {% endif %}
+  </div>
+
+  
+  <div style="margin-top: 10px; font-weight: bold; color: #1e3a8a;">
+    {% if confidence|float > 0.7 %}
+    High chance of Deepfake
+    {% elif confidence|float < 0.4 %}
+    Likely Authentic ✅
+    {% else %}
+    Moderate chance of Deepfake ⚠️
+    {% endif %}
+  </div>
+
+  <table>
+    <tr>
+      <th>Confidence Score</th>
+      <td>{{ confidence }}</td>
+    </tr>
+  </table> 
+  
+  <h2>File Information</h2>
+  <table>
+    <tr>
+      <th>File Name</th>
+      <td>{{ filename }}</td>
+    </tr>
+    <tr>
+      <th>Generated On</th>
+      <td>{{ timestamp }}</td>
+    </tr>
+
+  <tr><th>File Path</th><td>{{ file_details.absolute_path }}</td></tr>
+  <tr><th>Size (Bytes)</th><td>{{ file_details.size_bytes }}</td></tr>
+  <tr><th>Size (KB)</th><td>{{ file_details.size_kb }}</td></tr>
+  <tr><th>Created On</th><td>{{ file_details.created }}</td></tr>
+  <tr><th>Modified On</th><td>{{ file_details.modified }}</td></tr>
+  <tr><th>Last Accessed</th><td>{{ file_details.accessed }}</td></tr>
+  <tr><th>Image Width</th><td>{{ file_details.width }} px</td></tr>
+  <tr><th>Image Height</th><td>{{ file_details.height }} px</td></tr>
+  <tr><th>Image Mode</th><td>{{ file_details.mode }}</td></tr>
+  <tr><th>Image Format</th><td>{{ file_details.format }}</td></tr>
+
+  </table>
+
+  <h2>Grad-CAM Visualization</h2>
+  <div class="gradcam-container">
+    <div class="gradcam-box">
+      <h3>Whole Image</h3>
+      <img src="{{ gradcam_full_path }}" alt="Grad-CAM Whole Image">
+    </div>
+    <div class="gradcam-box">
+      <h3>Face Region Crop</h3>
+      <img src="{{ gradcam_face_path }}" alt="Grad-CAM Face Crop">
+    </div>
+  </div>
+ 
+
+</body>
+</html>

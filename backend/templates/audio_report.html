@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Audio Forensic Report</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 40px;
+      background-color: #f8fafc;
+      color: #2c3e50;
+    }
+    h1 {
+      color: #1e3a8a;
+      border-bottom: 3px solid #1e40af;
+      padding-bottom: 8px;
+    }
+    h2 {
+      color: #1e40af;
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 10px 15px;
+      text-align: left;
+    }
+    th {
+      background-color: #1e3a8a;
+      color: white;
+      font-weight: bold;
+    }
+    tr:nth-child(even) {
+      background-color: #f1f5f9;
+    }
+    .verdict {
+      font-size: 1.3em;
+      margin: 20px 0;
+      padding: 10px 15px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .deepfake {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+      font-weight: bold;
+    }
+    .genuine {
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+      font-weight: bold;
+    }
+    .waveform-container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .waveform-box {
+      text-align: center;
+    }
+    .waveform-box img {
+      max-width: 500px;
+      border: 2px solid #1e3a8a;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    a {
+      color: #1e40af;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Audio Forensic Analysis Report</h1>
+  
+  <h2>Detection Result</h2>
+  <div class="verdict {% if verdict == 'Deepfake' %}deepfake{% else %}genuine{% endif %}">
+    {{ verdict }}
+  </div>
+
+  <div style="margin-top: 10px; font-weight: bold; color: #1e3a8a;">
+    Similarity Score: {{ similarity }}  
+    <br>
+    Probability: {{ probability }}
+  </div>
+
+  <h2>Reference & Test Audio</h2>
+  <div class="waveform-container">
+    <div class="waveform-box">
+      <h3>Reference Audio</h3>
+      <p>{{ reference_filename }}</p>
+      <img src="{{ reference_waveform }}" alt="Reference Audio Waveform">
+      <br>
+      <a href="http://127.0.0.1:8000/{{ ref_url }}">Open Reference Audio</a>
+    </div>
+    <div class="waveform-box">
+      <h3>Test Audio</h3>
+      <p>{{ test_filename }}</p>
+      <img src="{{ test_waveform }}" alt="Test Audio Waveform">
+      <br>
+      <a href="http://127.0.0.1:8000/{{ test_url }}">Open Test Audio</a>
+    </div>
+  </div>
+
+  <h2>File Information</h2>
+  <table>
+    <tr>
+      <th>Reference File</th>
+      <td><a href="http://127.0.0.1:8000/{{ ref_url }}">{{ reference_path }} </a></td>
+    </tr>
+    <tr>
+      <th>Test File</th>
+      <td><a href="http://127.0.0.1:8000/{{ test_url }}">{{ test_path }} </a></td>
+    </tr>
+    <tr>
+      <th>Generated On</th>
+      <td>{{ timestamp }}</td>
+    </tr>
+  </table>
+</body>
+</html>
