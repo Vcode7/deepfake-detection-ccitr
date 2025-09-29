@@ -54,8 +54,8 @@ A comprehensive AI-powered deepfake detection platform with user authentication,
 ### 1. Clone the Repository
 
 bash
-git clone https://github.com/Pranati-R/Deepfake-Detection-tool-CID.git
-cd Deepfake-Detection-tool-CID/app
+git clone https://github.com/Vcode7/deepfake-detection-ccitr.git
+cd deepfake-detection-ccitr/app
 
 
 ---
@@ -311,3 +311,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 * Open-source community for various dependencies
 
 ---
+
